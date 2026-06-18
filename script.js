@@ -49,6 +49,7 @@ const operatorButtons = document.querySelectorAll(".operator");
 const equalsButton = document.querySelector(".equals");
 const clearButton = document.querySelector(".clear");
 const decimalButton = document.querySelector(".decimal");
+const backspaceButton = document.querySelector(".backspace");
 
 ///////////EVENTLISTENER NUMBERS///////////
 numberButtons.forEach(button => {
@@ -143,5 +144,30 @@ decimalButton.addEventListener("click", () => {
 
         secondNumber += ".";
         display.textContent = secondNumber;
+    }
+});
+
+///////////EVENTLISTENER BACKSPACE///////////
+backspaceButton.addEventListener("click", () =>{
+
+    //reset after result
+    if (shouldResetDisplay) {
+        firstNumber = "";
+        secondNumber = "";
+        operator = "";
+        shouldResetDisplay = false;
+        display.textContent = firstNumber || "0";
+        return;
+    }
+
+    //first number
+    if (operator === "") {
+        firstNumber = firstNumber.slice(0, -1);
+        display.textContent = firstNumber || "0";
+    }
+    //second number
+    else {
+        secondNumber = secondNumber.slice(0, -1);
+        display.textContent = secondNumber || "0";
     }
 });
