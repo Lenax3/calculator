@@ -22,10 +22,18 @@ function operate(operator, a, b) {
   a = Number(a);
   b = Number(b);
 
-  if (operator === "+") return add(a, b);
-  if (operator === "-") return subtract(a, b);
-  if (operator === "*") return multiply(a, b);
-  if (operator === "/") return divide(a, b);
+  let result;
+
+  if (operator === "+") result =  add(a, b);
+  if (operator === "-") result = subtract(a, b);
+  if (operator === "*") result = multiply(a, b);
+  if (operator === "/") result = divide(a, b);
+
+  if (typeof result === "number") {
+    return Math.round(result * 1000) / 1000;
+  }
+
+  return result;
 }
 ///////////STATE (MIND)///////////
 let firstNumber = "";
@@ -40,6 +48,7 @@ const numberButtons = document.querySelectorAll(".number");
 const operatorButtons = document.querySelectorAll(".operator");
 const equalsButton = document.querySelector(".equals");
 const clearButton = document.querySelector(".clear");
+const decimalButton = document.querySelector(".decimal");
 
 ///////////EVENTLISTENER NUMBERS///////////
 numberButtons.forEach(button => {
@@ -68,6 +77,10 @@ numberButtons.forEach(button => {
 operatorButtons.forEach(button => {
     button.addEventListener("click", () => {
 
+        if (firstNumber === "") {
+            return;
+        }
+
         if (firstNumber !== "" && secondNumber !== "") {
             firstNumber = operate(operator, firstNumber, secondNumber);
             display.textContent = firstNumber;
@@ -76,23 +89,59 @@ operatorButtons.forEach(button => {
 
         operator = button.textContent;
     });
-})
+});
 
 ///////////EVENTLISTENER EQUALS///////////
-equalsButton.addEventListener ("click", () => {
+equalsButton.addEventListener("click", () => {
 
-    if (firstNumber === "" || operator === "" || secondNumber === "" || ) {
+    if (firstNumber === "" || operator === "" || secondNumber === "") {
         return;
     }
-    //if something of the following components is missing, EL is being interrupted
-    display.textContent = operate(operator, firstNumber, secondNumber);
+
+    const result = operate(operator, firstNumber, secondNumber);
+
+    display.textContent = result;
+
+    firstNumber = result;
+    operator = "";
+    secondNumber = "";
+
     shouldResetDisplay = true;
 });
 
 ///////////EVENTLISTENER CLEAR///////////
-clearButton.addEventListener ("click", () => {
+clearButton.addEventListener("click", () => {
     firstNumber = "";
     secondNumber = "";
     operator = "";
+    shouldResetDisplay = false;
     display.textContent = "0";
+});
+
+///////////EVENTLISTENER DECIMAL///////////
+decimalButton.addEventListener("click", () => {
+
+    //clears display
+    if (shouldResetDisplay) {
+        firstNumber = "";
+        secondNumber = "";
+        operator = "";
+        display.textContent = "";
+        shouldResetDisplay = false;
+    }
+
+    //prevents user from entering multiple "decimal dots" 
+    if (operator === "") {
+        if (firstNumber.includes (".")) return;
+        if (firstNumber === "") firstNumber = "0";
+
+        firstNumber += ".";
+        display.textContent = firstNumber;
+    } else {
+        if (secondNumber.includes (".")) return;
+        if (secondNumber === "") secondNumber = "0";
+
+        secondNumber += ".";
+        display.textContent = secondNumber;
+    }
 });
