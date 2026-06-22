@@ -7,20 +7,27 @@
 
     <link rel="stylesheet" href="css/styles.css">
     <script src="script.js" defer></script>
-    
+
     <link rel="icon" href="favicon.png" type="image/png">
 
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Jersey+25&family=Roboto+Slab:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Jersey+25&family=Roboto+Slab:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=VT323&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <div class="calculator">
+
         <div id="display">
             <div class="previous-operand"></div>
             <div class="current-operand"></div>
         </div>
-        
+
         <div class="buttons">
-            <!-------- Numbers-------->
+
+            <button class="clear">AC</button>
+            <button class="backspace">C</button>
+            <button class="percent">%</button>
+            <button class="operator">÷</button>
+
             <button class="number">7</button>
             <button class="number">8</button>
             <button class="number">9</button>
@@ -34,16 +41,14 @@
             <button class="number">1</button>
             <button class="number">2</button>
             <button class="number">3</button>
-            <button class="operator">*</button>
+            <button class="operator">×</button>
 
             <button class="number">0</button>
             <button class="decimal">.</button>
-            <button class="equals">=</button>
-            <button class="operator">/</button>
 
-            <button class="clear">C</button>
-            <button class="backspace">←</button>
+            <button class="equals" id="equals">=</button>
         </div>
+
     </div>
 </body>
 </html>

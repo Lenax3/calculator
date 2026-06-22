@@ -58,12 +58,12 @@ const equalsButton = document.querySelector(".equals");
 const clearButton = document.querySelector(".clear");
 const decimalButton = document.querySelector(".decimal");
 const backspaceButton = document.querySelector(".backspace");
+const percentButton = document.querySelector(".percent");
 
 ///////////EVENTLISTENER NUMBERS///////////
 numberButtons.forEach(button => {
     button.addEventListener("click", () => {
 
-        // Result Reset Fix
         if (shouldResetDisplay) {
             firstNumber = "";
             secondNumber = "";
@@ -75,7 +75,6 @@ numberButtons.forEach(button => {
             shouldResetDisplay = false;
         }
 
-        // Number Input Logic
         if (operator === "") {
             firstNumber += button.textContent;
             currentOperand.textContent = firstNumber;
@@ -96,16 +95,14 @@ operatorButtons.forEach(button => {
 
         if (firstNumber !== "" && secondNumber !== "") {
             firstNumber = operate(operator, firstNumber, secondNumber);
-
-            currentOperand.textContent = firstNumber;
-
             secondNumber = "";
+            currentOperand.textContent = firstNumber;
         }
 
         operator = button.textContent;
 
         previousOperand.textContent = `${firstNumber} ${operator}`;
-        
+        currentOperand.textContent = "";
     });
 });
 
@@ -145,7 +142,6 @@ clearButton.addEventListener("click", () => {
 ///////////EVENTLISTENER DECIMAL///////////
 decimalButton.addEventListener("click", () => {
 
-    // Clears display
     if (shouldResetDisplay) {
         firstNumber = "";
         secondNumber = "";
@@ -157,7 +153,6 @@ decimalButton.addEventListener("click", () => {
         shouldResetDisplay = false;
     }
 
-    // Prevent multiple decimal dots
     if (operator === "") {
 
         if (firstNumber.includes(".")) return;
@@ -183,7 +178,6 @@ decimalButton.addEventListener("click", () => {
 ///////////EVENTLISTENER BACKSPACE///////////
 backspaceButton.addEventListener("click", () => {
 
-    // Reset after result
     if (shouldResetDisplay) {
 
         firstNumber = "";
@@ -198,7 +192,6 @@ backspaceButton.addEventListener("click", () => {
         return;
     }
 
-    // First number
     if (operator === "") {
 
         firstNumber = firstNumber.slice(0, -1);
@@ -206,11 +199,50 @@ backspaceButton.addEventListener("click", () => {
         currentOperand.textContent = firstNumber || "0";
     }
 
-    // Second number
     else {
 
         secondNumber = secondNumber.slice(0, -1);
 
         currentOperand.textContent = secondNumber || "0";
     }
+});
+
+///////////EVENTLISTENER PERCENT///////////
+percentButton.addEventListener("click", () => {
+
+    if (shouldResetDisplay) return;
+
+    if (operator === "") {
+
+        if (firstNumber === "") return;
+
+        firstNumber = String(
+            Math.round((Number(firstNumber) / 100) * 1000) / 1000
+        );
+
+        currentOperand.textContent = firstNumber;
+
+        return;
+    }
+
+    if (secondNumber === "") return;
+
+    const first = Number(firstNumber);
+    const second = Number(secondNumber);
+
+    let percentValue;
+
+    if (operator === "+" || operator === "-") {
+        percentValue = first * (second / 100);
+    }
+
+    if (operator === "*" || operator === "/") {
+        percentValue = second / 100;
+    }
+
+    secondNumber = String(
+        Math.round(percentValue * 1000) / 1000
+    );
+
+    currentOperand.textContent = secondNumber;
 });
