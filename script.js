@@ -100,6 +100,7 @@ operatorButtons.forEach(button => {
         operator = button.textContent.trim();
 
         previousOperand.textContent = `${firstNumber} ${operator}`;
+        currentOperand.textContent = "";
     });
 });
 
@@ -191,12 +192,12 @@ backspaceButton.addEventListener("click", () => {
 
     if (operator === "") {
 
-        firstNumber = firstNumber.slice(0, -1);
+        firstNumber = String(firstNumber).slice(0, -1);
 
         currentOperand.textContent = firstNumber || "0";
     } else {
 
-        secondNumber = secondNumber.slice(0, -1);
+        secondNumber = String(secondNumber).slice(0, -1);
 
         currentOperand.textContent = secondNumber || "0";
     }
