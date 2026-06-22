@@ -31,8 +31,8 @@ function operate(operator, a, b) {
 
     if (operator === "+") result = add(a, b);
     if (operator === "-") result = subtract(a, b);
-    if (operator === "*") result = multiply(a, b);
-    if (operator === "/") result = divide(a, b);
+    if (operator === "×" || operator === "*") result = multiply(a, b);
+    if (operator === "÷" || operator === "/") result = divide(a, b);
 
     if (typeof result === "number") {
         return Math.round(result * 1000) / 1000;
@@ -58,7 +58,7 @@ const equalsButton = document.querySelector(".equals");
 const clearButton = document.querySelector(".clear");
 const decimalButton = document.querySelector(".decimal");
 const backspaceButton = document.querySelector(".backspace");
-const percentButton = document.querySelector(".percent");
+const percentButton = document.querySelectorAll(".percent");
 
 ///////////EVENTLISTENER NUMBERS///////////
 numberButtons.forEach(button => {
@@ -76,10 +76,10 @@ numberButtons.forEach(button => {
         }
 
         if (operator === "") {
-            firstNumber += button.textContent;
+            firstNumber += button.textContent.trim();
             currentOperand.textContent = firstNumber;
         } else {
-            secondNumber += button.textContent;
+            secondNumber += button.textContent.trim();
             currentOperand.textContent = secondNumber;
         }
     });
@@ -92,15 +92,14 @@ operatorButtons.forEach(button => {
         if (firstNumber === "") return;
 
         if (firstNumber !== "" && secondNumber !== "") {
-            firstNumber = operate(operator, firstNumber, secondNumber);
+            firstNumber = String(operate(operator, firstNumber, secondNumber));
             secondNumber = "";
             currentOperand.textContent = firstNumber;
         }
 
-        operator = button.textContent;
+        operator = button.textContent.trim();
 
         previousOperand.textContent = `${firstNumber} ${operator}`;
-        currentOperand.textContent = "";
     });
 });
 
@@ -118,7 +117,7 @@ equalsButton.addEventListener("click", () => {
 
     currentOperand.textContent = result;
 
-    firstNumber = result;
+    firstNumber = String(result);
     operator = "";
     secondNumber = "";
 
@@ -231,7 +230,7 @@ percentButton.addEventListener("click", () => {
         percentValue = first * (second / 100);
     }
 
-    if (operator === "*" || operator === "/") {
+    if (operator === "×" || operator === "*") {
         percentValue = second / 100;
     }
 
